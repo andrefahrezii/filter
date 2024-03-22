@@ -1,5 +1,5 @@
 # Gunakan Node.js versi 14 sebagai base image
-FROM node:14
+FROM node:20
 
 # Buat direktori kerja di dalam container
 WORKDIR /usr/src/app
