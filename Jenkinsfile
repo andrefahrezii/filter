@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Deploy dengan Docker Compose
-                    sh 'docker-compose up -d --build --remove-orphans'
+                    sh 'docker compose up -d --build --remove-orphans'
                 }
             }
         }
