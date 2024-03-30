@@ -18,6 +18,7 @@ pipeline {
                 script {
                     // Build Next.js app with Docker Compose
                     echo 'docker-compose build'
+                    sh 'pwd'
                     sh 'docker ps -a'
                 }
             }
