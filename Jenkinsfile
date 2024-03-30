@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your Next.js source code from version control
-                git 'https://github.com/yourusername/your-nextjs-app.git'
+                git 'https://github.com/andrefahrezii/filter.git'
             }
         }
 
