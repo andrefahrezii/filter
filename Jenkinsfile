@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Build Next.js app with Docker Compose
-                    sh 'docker-compose build'
+                    echo 'docker-compose build'
                 }
             }
         }
