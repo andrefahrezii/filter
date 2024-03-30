@@ -1,46 +1,50 @@
 pipeline {
-    agent any
+  agent any
+  stages {
 
-    stages {
-        stage('Checkout') {
-            steps {
-                // Checkout your Next.js source code from version control
-                git 'https://github.com/andrefahrezii/filter.git'
-            }
+    stage('Stage 1') {
+      steps {
+        script {
+          echo 'This whole pipeline will take ~40sec to finish.'
         }
+      }
+    }
 
-        stage('Build') {
-            steps {
+    stage('Parallel stages') {
+      parallel {
+
+        stage('Sequential nested stages') {
+          stages {
+            stage('Stage 2') {
+              steps {
                 script {
-                    // Build Next.js app with Docker Compose
-                    sh 'docker-compose build'
+                  echo 'Stage 2'
+                  sh 'sleep 20'
                 }
+              }
             }
+            stage('Stage 3') {
+              steps {
+                script {
+                  echo 'Stage 3'
+                  sh 'sleep 20'
+                }
+              }
+            }
+          }
         }
 
-        stage('Run Tests') {
-            steps {
-                // You can add test commands here if needed
-                sh 'pwd'
+        stage('Stage 4') {
+          steps {
+            script {
+              echo 'Stage 4'
+              sh 'sleep 20'
             }
+          }
         }
 
-        stage('Deploy') {
-            steps {
-                // You can add deployment steps here
-                sh 'ls'
-            }
-        }
+      }
     }
 
-    post {
-        success {
-            // Add any post-build actions here
-            sh'pwd'
-        }
-        failure {
-            // Add any failure actions here
-            sh 'ls -l'
-        }
-    }
+  }
 }
