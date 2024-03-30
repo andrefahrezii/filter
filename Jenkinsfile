@@ -40,7 +40,7 @@ pipeline {
         }
         failure {
             // Add any failure actions here
-            'ls -l'
+            sh 'ls -l'
         }
     }
 }
