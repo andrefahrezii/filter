@@ -1,50 +1,58 @@
 pipeline {
-  agent any
-  stages {
+    agent any
 
-    stage('Stage 1') {
-      steps {
-        script {
-          echo 'This whole pipeline will take ~40sec to finish.'
-        }
-      }
+    triggers {
+        pollSCM('*/5 * * * *') // Mengecek perubahan di repositori setiap 5 menit
     }
 
-    stage('Parallel stages') {
-      parallel {
-
-        stage('Sequential nested stages') {
-          stages {
-            stage('Stage 2') {
-              steps {
-                script {
-                  echo 'Stage 2'
-                  sh 'sleep 20'
-                }
-              }
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your Next.js source code from version control
+                git branch: 'main', url: 'https://github.com/andrefahrezii/filter.git'
             }
-            stage('Stage 3') {
-              steps {
-                script {
-                  echo 'Stage 3'
-                  sh 'sleep 20'
-                }
-              }
-            }
-          }
         }
 
-        stage('Stage 4') {
-          steps {
-            script {
-              echo 'Stage 4'
-              sh 'sleep 20'
+        stage('Build') {
+            steps {
+                script {
+                    // Build Next.js app with Docker Compose
+                    sh 'docker-compose build'
+                }
             }
-          }
         }
 
-      }
+        stage('Deploy') {
+            steps {
+                script {
+                    // Deploy dengan Docker Compose
+                    sh 'docker-compose up -d --build --remove-orphans'
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                // Menjalankan SonarQube analysis
+                withSonarQubeEnv('SonarQube_Server') {
+                    sh 'sonar-scanner \
+                        -Dsonar.projectKey=filter-fe \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=https://sonarqube.wosiangmalam.site \
+                        -Dsonar.login=sqp_5d4e7e5e43c7705ef5b12112dc0801aebb49a54c'
+                }
+            }
+        }
     }
 
-  }
+    post {
+        success {
+            // Menampilkan pesan jika berhasil
+            echo 'Build dan deploy berhasil'
+        }
+        failure {
+            // Menampilkan pesan jika gagal
+            echo 'Build atau deploy gagal'
+        }
+    }
 }
