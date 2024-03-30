@@ -92,7 +92,6 @@ const Filter = () => {
         setFilteredData(newData);
     };
 
-    // Filter unique cities based on selected type
     const uniqueCities = selectedType ? [...new Set(dummyData.filter(item => item.type === selectedType).map(item => item.city))] : [];
 
     return (
@@ -142,7 +141,7 @@ const Filter = () => {
                     Discover our <Text fontWeight={"bold"}>Featured Listings</Text>
                 </Text>
             </HStack>
-            <PropertyCarousel data={filteredData} />
+            {/* <PropertyCarousel data={filteredData} /> */}
         </Flex>
     );
 };
