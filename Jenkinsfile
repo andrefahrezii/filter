@@ -21,12 +21,14 @@ pipeline {
         stage('Run Tests') {
             steps {
                 // You can add test commands here if needed
+                sh 'pwd'
             }
         }
 
         stage('Deploy') {
             steps {
                 // You can add deployment steps here
+                sh 'ls'
             }
         }
     }
@@ -34,9 +36,11 @@ pipeline {
     post {
         success {
             // Add any post-build actions here
+            sh'pwd'
         }
         failure {
             // Add any failure actions here
+            'ls -l'
         }
     }
 }
